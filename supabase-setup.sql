@@ -9,7 +9,7 @@ create table if not exists public.points (
   points integer not null default 0,
   date date,
   remarks text,
-  "createdAt" timestamptz not null default now()
+  "created_at" timestamptz not null default now()
 );
 alter table public.points enable row level security;
 
