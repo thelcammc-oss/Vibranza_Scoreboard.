@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>VIBRANZA Points Dashboard</title><link rel="stylesheet" href="style.css"></head>
+<body>
+    <header class="topbar">
+        <div>
+            <img class="college-logo" src="college-logo.png" alt="Mary Matha College Logo">
+           <strong>MARY MATHA COLLEGE</strong>
+            <span>of Arts &amp; Science (Co-Ed), Periyakulam</span>
+            <small>Managed by CMI Fathers | NAAC B++<br>
+            Affiliated to Madurai Kamaraj University | Recognized by UGC Under Section 2F
+             &amp; 12B</small>
+        </div>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="login.html">Admin Login</a>
+        </nav>
+    </header>
+<main class="container"><section class="hero"><div>
+    <p class="eyebrow">INTER-DEPARTMENT CULTURAL MEET</p>
+    <h1>House Points</h1>
+    <p>Track competition results and house standings.</p>
+</div></section>
+<section class="stats" id="stats"></section>
+<h2>House Standings</h2>
+<section class="house-grid" id="houses"></section>
+<section class="panel">
+    <h2>Recent Results</h2>
+    <div class="table-wrap"><table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Event</th>
+                <th>House</th>
+                <th>Participant</th>
+                <th>Rank</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody id="recentRows"></tbody>
+    </table>
+</div>
+</section>
+<section class="panel" id="houseDetails">
+    <h2>Participant Points</h2>
+    <p class="muted">Select a house above to view participant-wise points.</p>
+</section>
+</main>
+<footer>© 2026 VIBRANZA — Mary Matha College of Arts & Science</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="script.js"></script>
+</body>
+</html>
