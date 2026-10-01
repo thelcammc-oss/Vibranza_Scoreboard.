@@ -37,7 +37,7 @@ function normalized(row) {
   return {
     ...row,
     regNo: row.reg_no ?? row.regNo ?? "",
-    createdAt: row.created_at ?? row.createdAt ?? ""
+    created_at: row.created_at ?? row.created_at ?? ""
   };
 }
 
