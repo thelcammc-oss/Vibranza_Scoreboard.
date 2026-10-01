@@ -7,7 +7,7 @@ async function loadResults() {
   const { data, error } = await supabaseClient
     .from("points")
     .select("*")
-    .order("createdAt", { ascending: false });
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Supabase loading error:", error);
