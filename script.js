@@ -25,12 +25,14 @@ function clearForm(){if(!$("resultForm"))return;$("resultForm").reset();$("resul
 function editResult(id){const r=results.find(x=>x.id===id);if(!r)return;$("resultId").value=r.id;$("eventChoice").value=r.event;["house","participant","regNo","rank","points","date","remarks"].forEach(k=>$(k).value=r[k]??"");$("formTitle").textContent="Edit Result";window.scrollTo({top:0,behavior:"smooth"});}
 async function deleteResult(id){if(!confirm("Delete this result?"))return;const {error}=await supabaseClient.from("points").delete().eq("id",id);if(error){alert(error.message);return;}await loadResults();}
 document.addEventListener("DOMContentLoaded",async()=>{try{await loadResults();}
-catch(e) {
-  console.error(e);
+catch (e) {
+  console.error("Supabase loading error:", e);
+
   if ($("adminMessage")) {
     $("adminMessage").textContent =
-      "Could not load data. Check Supabase URL, key, table and RLS policies.";
+      "Database Error: " + (e.message || JSON.stringify(e));
   }
+
   return;
 }
 const form=$("resultForm");if(form)form.addEventListener("submit",async e=>{e.preventDefault();const id=$("resultId").value;const item={event:$("eventChoice").value.trim(),house:$("house").value,participant:$("participant").value.trim(),regNo:$("regNo").value.trim(),rank:$("rank").value,points:Number($("points").value),date:$("date").value||null,remarks:$("remarks").value.trim()};let q=id?supabaseClient.from("points").update(item).eq("id",id):supabaseClient.from("points").insert(item);const {error}=await q;if(error){$("adminMessage").textContent=error.message;return;}$("adminMessage").textContent="Saved successfully.";clearForm();await loadResults();});
