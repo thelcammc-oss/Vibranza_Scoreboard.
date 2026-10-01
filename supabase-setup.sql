@@ -27,13 +27,13 @@ for select to anon, authenticated using (true);
 -- Replace the UUID below with your admin user's UID from Authentication > Users.
 create policy "Only admin can add points" on public.points
 for insert to authenticated
-with check (auth.uid() = 'fd685543-e285-4bea-a5a4-2852bdad4121');
+with check (auth.uid() = 'cccdbda0-c1dd-4c2b-9ef4-e3756ddd072a');
 
 create policy "Only admin can edit points" on public.points
 for update to authenticated
-using (auth.uid() = 'fd685543-e285-4bea-a5a4-2852bdad4121')
-with check (auth.uid() = 'fd685543-e285-4bea-a5a4-2852bdad4121');
+using (auth.uid() = 'cccdbda0-c1dd-4c2b-9ef4-e3756ddd072a')
+with check (auth.uid() = 'cccdbda0-c1dd-4c2b-9ef4-e3756ddd072a');
 
 create policy "Only admin can delete points" on public.points
 for delete to authenticated
-using (auth.uid() = 'fd685543-e285-4bea-a5a4-2852bdad4121');
+using (auth.uid() = 'cccdbda0-c1dd-4c2b-9ef4-e3756ddd072a');
