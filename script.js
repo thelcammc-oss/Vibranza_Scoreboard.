@@ -2,7 +2,7 @@ const HOUSE_NAMES=["Yellow House","Blue House","Red House","Green House"];
 const $=id=>document.getElementById(id);let results=[];
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function totalFor(h,rows=results){return rows.filter(r=>r.house===h).reduce((s,r)=>s+Number(r.points||0),0);}
-function normalized(r){return {...r,regNo:r.regNo??r.reg_no??"",createdAt:r.createdAt??r.created_at??""};}
+function normalized(r){return {...r,regNo:r.regNo??r.reg_no??"",createdAt:r.createdAt??r.createdAt??""};}
 async function loadResults(){const {data,error}=await supabaseClient.from("points").select("*")
 .order("createdAt", { ascending: false });
 if(error)throw error;results=(data||[])
