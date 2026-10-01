@@ -3,10 +3,20 @@ const $=id=>document.getElementById(id);let results=[];
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function totalFor(h,rows=results){return rows.filter(r=>r.house===h).reduce((s,r)=>s+Number(r.points||0),0);}
 function normalized(r){return {...r,regNo:r.regNo??r.reg_no??"",createdAt:r.createdAt??r.createdAt??""};}
-async function loadResults(){const {data,error}=await supabaseClient.from("points").select("*")
-.order("createdAt", { ascending: false });
-if(error)throw error;results=(data||[])
-    .map(normalized);renderAll();}
+async function loadResults() {
+  const { data, error } = await supabaseClient
+    .from("points")
+    .select("*")
+    .order("createdAt", { ascending: false });
+
+  if (error) {
+    console.error("Supabase loading error:", error);
+    throw error;
+  }
+
+  results = (data || []).map(normalized);
+  renderAll();
+}
 function renderDashboard(){const rows=results,total=rows.reduce((s,r)=>s+Number(r.points||0),0);if($("stats"))$("stats").innerHTML=`<article class="stat"><span>Recorded Results</span><strong>${rows.length}</strong></article><article class="stat"><span>Total Points Awarded</span><strong>${total}</strong></article><article class="stat"><span>Houses</span><strong>4</strong></article>`;if($("houses")){$("houses").innerHTML=HOUSE_NAMES.map((h,i)=>`<button class="house-card house-${i}" data-house="${h}"><span>${h}</span><strong>${totalFor(h)} <small>pts</small></strong><em>View participants →</em></button>`).join("");$("houses").querySelectorAll("[data-house]").forEach(b=>b.addEventListener("click",()=>showHouse(b.dataset.house)));}if($("recentRows"))$("recentRows").innerHTML=rows.slice(0,8).map(r=>`<tr><td>${esc(r.date||"—")}</td><td>${esc(r.event)}</td><td>${esc(r.house)}</td><td>${esc(r.participant)}</td><td>${esc(r.rank)}</td><td>${esc(r.points)}</td></tr>`).join("")||'<tr><td colspan="6">No results recorded yet.</td></tr>';}
 function showHouse(h){const s=$("houseDetails");if(!s)return;const rows=results.filter(r=>r.house===h),people={};rows.forEach(r=>{let p=people[r.participant]??={name:r.participant,regNo:r.regNo,points:0,events:[]};p.points+=Number(r.points||0);p.events.push(r.event);});s.innerHTML=`<h2>${esc(h)} — Participant Points</h2><div class="table-wrap"><table><thead><tr><th>Participant</th><th>Register No.</th><th>Events</th><th>Total Points</th></tr></thead><tbody>${Object.values(people).map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.regNo||"—")}</td><td>${esc(p.events.join(", "))}</td><td>${p.points}</td></tr>`).join("")||'<tr><td colspan="4">No participants recorded.</td></tr>'}</tbody></table></div>`;}
 function renderAdmin(){const body=$("adminRows");if(!body)return;body.innerHTML=results.map(r=>`<tr><td>${esc(r.date||"—")}</td><td>${esc(r.event)}</td><td>${esc(r.house)}</td><td>${esc(r.participant)}</td><td>${esc(r.regNo||"—")}</td><td>${esc(r.rank)}</td><td>${esc(r.points)}</td><td><button class="btn tiny" data-edit="${r.id}">Edit</button> <button class="btn tiny danger" data-delete="${r.id}">Delete</button></td></tr>`).join("");$("emptyAdmin").textContent=results.length?"":"No results added yet.";body.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>editResult(b.dataset.edit)));body.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>deleteResult(b.dataset.delete)));}
